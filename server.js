@@ -1,10 +1,18 @@
 const express = require('express');
-const cors = require('cors'); 
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
- 
-app.use(express.json());  
+
+app.use(express.json());
 app.use(cors());
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: "BFHL API is running successfully!",
+    post_endpoint: "/bfhl",
+    get_endpoint: "/bfhl"
+  });
+});
 
 app.get('/bfhl', (req, res) => {
   res.status(200).json({ 
@@ -24,11 +32,9 @@ app.post('/bfhl', (req, res) => {
       });
     }
 
-    
     const numbers = [];
     const alphabets = [];
     const specialChars = [];
-    
     
     data.forEach(item => {
       const str = String(item);
@@ -36,41 +42,34 @@ app.post('/bfhl', (req, res) => {
       if (!isNaN(str) && str.trim() !== '') {
         numbers.push(Number(str));
       } 
-     
       else if (/^[a-zA-Z]+$/.test(str)) {
         alphabets.push(str.toUpperCase());
       }
-      
       else {
         specialChars.push(str);
       }
     });
     
-    
     const evenNumbers = numbers.filter(num => num % 2 === 0).map(num => num.toString());
     const oddNumbers = numbers.filter(num => num % 2 !== 0).map(num => num.toString());
     
-   
     const sum = numbers.reduce((acc, num) => acc + num, 0).toString();
-    
     
     let concatString = '';
     const allAlphabets = data
       .filter(item => /^[a-zA-Z]+$/.test(String(item)))
       .map(item => String(item));
     
-    
     const reversedAlphabets = allAlphabets.join('').split('').reverse();
     reversedAlphabets.forEach((char, index) => {
       concatString += index % 2 === 0 ? char.toUpperCase() : char.toLowerCase();
     });
     
-    
     const response = {
       is_success: true,
-      user_id: "abhemanthvarma_03032005", 
+      user_id: "abhemanthvarma_03032005",
       email: "abhemanth.varma2022@vitstudent.ac.in",
-      roll_number: "22BCT0044", 
+      roll_number: "22BCT0044",
       odd_numbers: oddNumbers,
       even_numbers: evenNumbers,
       alphabets: alphabets,
@@ -87,12 +86,6 @@ app.post('/bfhl', (req, res) => {
     });
   }
 });
-
-
-app.get('/bfhl', (req, res) => {
-  res.status(200).json({ operation_code: 1 });
-});
-
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
