@@ -6,6 +6,12 @@ const port = process.env.PORT || 3000;
 app.use(express.json());  
 app.use(cors());
 
+app.get('/bfhl', (req, res) => {
+  res.status(200).json({ 
+    operation_code: 1,
+    message: "Use POST method on this endpoint with JSON data"
+  });
+});
 
 app.post('/bfhl', (req, res) => {
   try {
